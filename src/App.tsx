@@ -1,453 +1,625 @@
-import { motion } from 'motion/react';
+import { AnimatePresence, motion } from 'motion/react';
 import {
   ArrowRight,
+  Building2,
+  Check,
+  Compass,
   Heart,
   MapPin,
-  Sparkles,
-  Check,
-  Send,
-  Plane,
-  Building2,
-  Compass,
-  Calendar,
-  Users,
-  Utensils,
-  Sun,
-  Ship,
-  Map,
-  Camera,
-  Waves,
-  Smile,
-  Music,
-  Wine,
-  Umbrella,
-  Navigation,
-  Leaf,
-  Palette,
   MessageCircle,
+  Palmtree,
+  Plane,
+  Send,
+  Sparkles,
+  Star,
+  Sun,
+  Users,
+  Waves,
+  X,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-const formats = [
+const commonIncludes = [
+  'VIP-трансфер из аэропорта и обратно',
+  'Проживание в апартаментах премиум-класса',
+  'Личная программа отдыха',
+  'Сопровождение на протяжении всего отдыха',
+];
+
+const tours = [
   {
-    title: 'Романтика',
-    positioning: 'Не просто поездка, а личное время вдвоем в красивой атмосфере и без лишней суеты.',
-    price: 'от 3 200 €',
-    priceDesc: 'за двоих',
-    specs: [
-      { text: 'Для пары', icon: <Heart className="w-3 h-3" /> },
-      { text: 'Индивидуальный формат', icon: <Compass className="w-3 h-3" /> },
+    slug: 'bachelorette',
+    title: 'Девичник',
+    subtitle: 'Женское путешествие для перезагрузки, красоты и ярких эмоций.',
+    price: 'от 1200 €',
+    priceNote: 'без перелёта на человека',
+    people: 'минимум 4 человека',
+    image: '/pack2.png',
+    badge: 'Для подруг',
+    teaser:
+      'Море, spa, закаты, красивые ужины и то самое состояние, когда хочется снова почувствовать себя лёгкой, живой и наполненной.',
+    highlights: ['SPA и забота о себе', 'Красивые ужины и закаты', 'Смех, танцы, свобода'],
+    description: [
+      'Это не просто поездка с подругами, а красивое женское путешествие, где можно выдохнуть, расслабиться и отпустить всё лишнее.',
+      'Мы собираем программу под ваше настроение: больше отдыха, больше красоты, больше вечеринок или больше мягкой перезагрузки.',
     ],
-    included: [
-      { text: 'Перелет', icon: <Plane className="w-4 h-4 text-[#C18C5D] shrink-0 mt-0.5" /> },
-      { text: 'Апартаменты класса люкс', icon: <Building2 className="w-4 h-4 text-[#C18C5D] shrink-0 mt-0.5" /> },
-    ],
-    features: [
-      { text: 'Ужины с видом на море', icon: <Utensils className="w-4 h-4 text-[#C18C5D]/60 shrink-0 mt-0.5" /> },
-      { text: 'Пикник на закате', icon: <Sun className="w-4 h-4 text-[#C18C5D]/60 shrink-0 mt-0.5" /> },
-      { text: 'Яхта по желанию', icon: <Ship className="w-4 h-4 text-[#C18C5D]/60 shrink-0 mt-0.5" /> },
-      { text: 'Прогулки по старому городу', icon: <Map className="w-4 h-4 text-[#C18C5D]/60 shrink-0 mt-0.5" /> },
-      { text: 'Фотосессии', icon: <Camera className="w-4 h-4 text-[#C18C5D]/60 shrink-0 mt-0.5" /> },
-    ],
-    img: '/pack1.png',
   },
   {
-    title: 'Family',
-    positioning: 'Отдых, который объединяет семью и оставляет теплые воспоминания надолго.',
-    price: 'от 3 500 €',
-    priceDesc: 'на семью',
-    specs: [
-      { text: '7-10 дней', icon: <Calendar className="w-3 h-3" /> },
-      { text: 'Семейный отдых', icon: <Users className="w-3 h-3" /> },
-    ],
-    included: [
-      { text: 'Перелет', icon: <Plane className="w-4 h-4 text-[#C18C5D] shrink-0 mt-0.5" /> },
-      { text: 'Апартаменты премиум-класса', icon: <Building2 className="w-4 h-4 text-[#C18C5D] shrink-0 mt-0.5" /> },
-    ],
-    features: [
-      { text: 'Мягкий климат', icon: <Sun className="w-4 h-4 text-[#C18C5D]/60 shrink-0 mt-0.5" /> },
-      { text: 'Безопасные пляжи и чистое море', icon: <Waves className="w-4 h-4 text-[#C18C5D]/60 shrink-0 mt-0.5" /> },
-      { text: 'Комфорт и спокойствие', icon: <Smile className="w-4 h-4 text-[#C18C5D]/60 shrink-0 mt-0.5" /> },
-      { text: 'Совместные семейные активности', icon: <Heart className="w-4 h-4 text-[#C18C5D]/60 shrink-0 mt-0.5" /> },
-    ],
-    img: '/pack3.png',
-  },
-  {
+    slug: 'friends',
     title: 'Friends',
-    positioning: 'Драйв, свобода и яркие впечатления. Ваш личный сценарий для самой запоминающейся поездки года.',
-    price: 'от 1 500 €',
-    priceDesc: 'за человека',
-    specs: [
-      { text: '10 дней', icon: <Calendar className="w-3 h-3" /> },
-      { text: 'Группа 4-6 человек', icon: <Users className="w-3 h-3" /> },
+    subtitle: 'Для компании, которая хочет прожить отпуск громко, красиво и со вкусом.',
+    price: 'от 1200 €',
+    priceNote: 'без перелёта на человека',
+    people: 'от 4 человек',
+    image: '/pack4.png',
+    badge: 'Для друзей',
+    teaser:
+      'Яхты, стильные места, ночная жизнь, шумные вечера и ощущение: вот это мы действительно отдохнули.',
+    highlights: ['Яхты и стильные локации', 'Рестораны, бары, клубы', 'Сценарий под вашу компанию'],
+    description: [
+      'Этот формат для тех, кто хочет сорваться компанией и прожить Аланью на максимуме: солнце, море, драйв и лёгкость.',
+      'Днём можно выбирать пляжи и красивые локации, а вечером уходить в ужины, караоке, клубы и долгие разговоры у моря.',
     ],
-    included: [
-      { text: 'Перелет', icon: <Plane className="w-4 h-4 text-[#C18C5D] shrink-0 mt-0.5" /> },
-      { text: 'Проживание', icon: <Building2 className="w-4 h-4 text-[#C18C5D] shrink-0 mt-0.5" /> },
-      { text: 'Сценарий поездки', icon: <Compass className="w-4 h-4 text-[#C18C5D] shrink-0 mt-0.5" /> },
-    ],
-    features: [
-      { text: 'Лучшие клубы, включая Illusion', icon: <Music className="w-4 h-4 text-[#C18C5D]/60 shrink-0 mt-0.5" /> },
-      { text: 'Вечеринки', icon: <Wine className="w-4 h-4 text-[#C18C5D]/60 shrink-0 mt-0.5" /> },
-      { text: 'Пляжный отдых', icon: <Umbrella className="w-4 h-4 text-[#C18C5D]/60 shrink-0 mt-0.5" /> },
-      { text: 'Красивые локации Алании', icon: <MapPin className="w-4 h-4 text-[#C18C5D]/60 shrink-0 mt-0.5" /> },
-      { text: 'Полное сопровождение', icon: <Navigation className="w-4 h-4 text-[#C18C5D]/60 shrink-0 mt-0.5" /> },
-    ],
-    img: '/pack4.png',
   },
   {
-    title: 'Women',
-    positioning: 'Эмоциональная перезагрузка, красота, свобода и новые впечатления в бережной атмосфере.',
-    price: 'от 1 500 €',
-    priceDesc: 'за человека',
-    specs: [
-      { text: '10 дней', icon: <Calendar className="w-3 h-3" /> },
-      { text: 'Группа 4-6 девушек', icon: <Users className="w-3 h-3" /> },
+    slug: 'family',
+    title: 'Family',
+    subtitle: 'Тёплый семейный отдых, где действительно хорошо и взрослым, и детям.',
+    price: 'от 3800 €',
+    priceNote: 'без перелёта',
+    people: 'от 3 человек',
+    image: '/pack3.png',
+    badge: 'Для семьи',
+    teaser:
+      'Комфорт, красивые места, лучшие пляжи и программа без суеты, где вся семья отдыхает, а не устаёт от организации.',
+    highlights: ['Лучшие пляжи и бассейны', 'Семейные кафе и прогулки', 'Удобный ритм без спешки'],
+    description: [
+      'Это отдых, где не нужно решать бесконечные бытовые вопросы и придумывать, чем заняться завтра.',
+      'Мы выстраиваем комфортный ритм поездки так, чтобы у семьи оставались силы на главное: быть вместе, смеяться и жить моментом.',
     ],
-    included: [
-      { text: 'Перелет', icon: <Plane className="w-4 h-4 text-[#C18C5D] shrink-0 mt-0.5" /> },
-      { text: 'Проживание', icon: <Building2 className="w-4 h-4 text-[#C18C5D] shrink-0 mt-0.5" /> },
-      { text: 'Программа', icon: <Compass className="w-4 h-4 text-[#C18C5D] shrink-0 mt-0.5" /> },
+  },
+  {
+    slug: 'romantic',
+    title: 'Romantic',
+    subtitle: 'Путешествие для двоих с приватностью, эстетикой и красивыми моментами.',
+    price: 'от 3200 €',
+    priceNote: 'без перелёта',
+    people: '2 человека',
+    image: '/pack1.png',
+    badge: 'Для двоих',
+    teaser:
+      'Ужин у моря, закаты, spa, уединённые локации и ощущение, что весь мир замедлился только для вас.',
+    highlights: ['романтические ужины', 'уединённые виды и закаты', 'годовщина, honeymoon, proposal'],
+    description: [
+      'Этот формат создан для любви, спокойствия и особенных моментов, которые хочется помнить ещё долго.',
+      'Это может быть медовый месяц, годовщина, предложение или просто красивый отдых вдвоём, где всё подстроено под ваше настроение.',
     ],
-    features: [
-      { text: 'Йога и медитации', icon: <Leaf className="w-4 h-4 text-[#C18C5D]/60 shrink-0 mt-0.5" /> },
-      { text: 'SPA и забота о себе', icon: <Sparkles className="w-4 h-4 text-[#C18C5D]/60 shrink-0 mt-0.5" /> },
-      { text: 'Арт-встречи и творчество', icon: <Palette className="w-4 h-4 text-[#C18C5D]/60 shrink-0 mt-0.5" /> },
-      { text: 'Вечеринки и прогулки', icon: <Wine className="w-4 h-4 text-[#C18C5D]/60 shrink-0 mt-0.5" /> },
-      { text: 'Женская атмосфера', icon: <Heart className="w-4 h-4 text-[#C18C5D]/60 shrink-0 mt-0.5" /> },
-    ],
-    img: '/pack2.png',
   },
 ];
 
-const advantages = [
+const reasons = [
   {
-    icon: <Heart className="w-8 h-8 stroke-2 text-[#C18C5D]" />,
-    title: 'Сценарий под вас',
-    desc: 'Мы не продаем шаблоны. Мы слушаем вас и собираем программу, которая точно совпадает с вашим настроением и ожиданиями.',
+    icon: <Heart className="h-7 w-7 text-[#C18C5D]" />,
+    title: 'Индивидуальный подход',
+    text: 'Каждый тур собирается под гостей, их ритм, желания и настроение отдыха.',
   },
   {
-    icon: <Sparkles className="w-8 h-8 stroke-2 text-[#C18C5D]" />,
-    title: 'Эстетика в деталях',
-    desc: 'Лучшие виды, проверенные локации, уютные рестораны и детали, которые превращают поездку в красивую историю.',
+    icon: <Building2 className="h-7 w-7 text-[#C18C5D]" />,
+    title: 'Премиальные апартаменты',
+    text: 'Подбираем проживание с красивой атмосферой, комфортом и ощущением уровня.',
   },
   {
-    icon: <Check className="w-8 h-8 stroke-2 text-[#C18C5D]" />,
-    title: 'Полное сопровождение',
-    desc: 'От встречи в аэропорту до брони ужинов и маршрутов по городу. Вам остается только приехать и отдыхать.',
+    icon: <Compass className="h-7 w-7 text-[#C18C5D]" />,
+    title: 'Личная программа',
+    text: 'Не массовый туризм, а продуманный авторский формат с нужным вам характером.',
+  },
+  {
+    icon: <Sparkles className="h-7 w-7 text-[#C18C5D]" />,
+    title: 'Сопровождение и забота',
+    text: 'Мы берём организацию на себя, чтобы вы просто проживали отдых красиво и легко.',
   },
 ];
 
 export default function App() {
   const [scrolled, setScrolled] = useState(false);
+  const [selectedTour, setSelectedTour] = useState<(typeof tours)[number] | null>(null);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
-
+    const handleScroll = () => setScrolled(window.scrollY > 48);
     window.addEventListener('scroll', handleScroll);
-
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    if (!selectedTour) {
+      document.body.style.overflow = '';
+      return;
+    }
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setSelectedTour(null);
+      }
+    };
+
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', onKeyDown);
+
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', onKeyDown);
+    };
+  }, [selectedTour]);
+
   return (
-    <div className="min-h-screen bg-[#FAF8F5] text-[#2C2A28] font-sans overflow-x-hidden">
+    <div className="min-h-screen overflow-x-hidden bg-[#f7f3ee] text-[#2C2A28]">
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-6 md:px-12 py-4 transition-all duration-300 ${
-          scrolled ? 'bg-[#FAF8F5] shadow-md' : 'bg-gradient-to-b from-black/50 to-transparent'
+        className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
+          scrolled ? 'bg-[#f7f3ee]/95 shadow-lg backdrop-blur-md' : 'bg-gradient-to-b from-black/45 to-transparent'
         }`}
       >
-        <div className="flex items-center">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-5 md:px-12 md:py-4">
           <img
             src="/tlogo.png"
             alt="Tête-à-Tête Alanya"
-            className={`h-14 md:h-[72px] object-contain transition-all duration-300 ${!scrolled && 'brightness-0 invert'}`}
+            className={`h-12 object-contain transition-all duration-300 sm:h-14 md:h-[72px] ${!scrolled ? 'brightness-0 invert' : ''}`}
           />
+
+          <a
+            href="#contact"
+            className={`shrink-0 rounded-full px-5 py-3 text-[11px] font-bold uppercase tracking-[0.22em] transition-all sm:px-6 sm:text-xs sm:tracking-[0.25em] ${
+              scrolled
+                ? 'bg-[#C18C5D] text-white hover:bg-[#aa774a]'
+                : 'bg-white/95 text-[#2C2A28] hover:bg-white'
+            }`}
+          >
+            Связаться
+          </a>
         </div>
-        <a
-          href="#contact"
-          className={`px-6 py-3 text-xs font-bold tracking-widest uppercase rounded-full transition-all shadow-lg hover:scale-105 ${
-            scrolled ? 'bg-[#C18C5D] text-white hover:bg-[#a6754a]' : 'bg-[#FAF8F5] text-[#2C2A28] hover:bg-white'
-          }`}
-        >
-          Связаться
-        </a>
       </nav>
 
-      <section className="relative h-[95vh] w-full flex items-center justify-center">
+      <section className="relative flex min-h-screen items-center">
         <div className="absolute inset-0">
-          <img
-            src="/658-1920x1080-blur_1.jpg"
-            alt="Средиземноморское побережье"
-            className="w-full h-full object-cover"
-            referrerPolicy="no-referrer"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#2C2A28]/50 via-[#2C2A28]/30 to-[#FAF8F5]"></div>
+          <img src="/658-1920x1080-blur_1.jpg" alt="Побережье Аланьи" className="h-full w-full object-cover" />
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(26,25,24,0.58),rgba(26,25,24,0.34)_34%,rgba(247,243,238,0.94)_100%)]" />
+          <div className="absolute inset-y-0 left-0 w-full bg-[radial-gradient(circle_at_24%_44%,rgba(32,31,29,0.52),rgba(32,31,29,0.18)_30%,rgba(32,31,29,0)_58%)]" />
         </div>
 
-        <div className="relative z-10 text-center px-4 max-w-4xl mx-auto flex flex-col items-center mt-20">
+        <div className="relative z-10 mx-auto flex max-w-7xl flex-col gap-12 px-6 pb-20 pt-36 md:px-12 lg:flex-row lg:items-end lg:justify-between">
+          <div className="max-w-3xl rounded-[2rem] bg-[linear-gradient(135deg,rgba(25,24,23,0.34),rgba(25,24,23,0.14))] px-6 py-8 shadow-[0_24px_80px_rgba(0,0,0,0.16)] backdrop-blur-[6px] md:px-8 md:py-10">
+            <motion.div
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7 }}
+              className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-white/90 backdrop-blur-sm sm:text-xs sm:tracking-[0.3em]"
+            >
+              <Star className="h-3.5 w-3.5" />
+              Жизнь — Здесь и Сейчас
+            </motion.div>
+
+            <motion.h1
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, delay: 0.1 }}
+              className="max-w-4xl font-serif text-5xl leading-[0.95] text-white drop-shadow-[0_10px_28px_rgba(0,0,0,0.35)] md:text-7xl lg:text-8xl"
+            >
+              Аланья
+              <br />
+              <span className="italic text-[#f8dfc5]">рай на земле</span>
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.25 }}
+              className="mt-8 max-w-2xl text-lg leading-relaxed text-white/96 drop-shadow-[0_6px_18px_rgba(0,0,0,0.28)] md:text-xl"
+            >
+              Место, где море, горы, солнце, зелень и спокойствие соединяются в атмосферу красивой жизни и отдыха,
+              который запоминается состоянием.
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.35 }}
+              className="mt-10 flex flex-col gap-4 sm:flex-row"
+            >
+              <a
+                href="#tours"
+                className="inline-flex items-center justify-center gap-3 rounded-full bg-[#C18C5D] px-8 py-4 text-sm font-bold uppercase tracking-[0.2em] text-white transition hover:-translate-y-0.5 hover:bg-[#aa774a]"
+              >
+                Выбрать тур
+                <ArrowRight className="h-4 w-4" />
+              </a>
+              <a
+                href="https://wa.me/905362925205"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-3 rounded-full border border-white/40 bg-white/10 px-8 py-4 text-sm font-bold uppercase tracking-[0.2em] text-white backdrop-blur-sm transition hover:bg-white/15"
+              >
+                <MessageCircle className="h-4 w-4" />
+                WhatsApp
+              </a>
+            </motion.div>
+          </div>
+
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.2 }}
-            className="text-xs md:text-sm tracking-[0.3em] uppercase mb-6 text-[#FAF8F5] font-semibold drop-shadow-md"
+            transition={{ duration: 0.8, delay: 0.45 }}
+            className="grid gap-4 sm:grid-cols-3 lg:max-w-xl"
           >
-            Boutique Travel Experience
+            {[
+              { icon: <Waves className="h-5 w-5" />, text: 'Море и горы рядом' },
+              { icon: <Sun className="h-5 w-5" />, text: 'Солнце почти круглый год' },
+              { icon: <Palmtree className="h-5 w-5" />, text: 'Атмосфера красивой жизни' },
+            ].map((item) => (
+              <div
+                key={item.text}
+                className="rounded-[1.75rem] border border-white/18 bg-[linear-gradient(180deg,rgba(255,255,255,0.18),rgba(255,255,255,0.1))] p-5 text-white shadow-[0_18px_45px_rgba(0,0,0,0.18)] backdrop-blur-md"
+              >
+                <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-full bg-white/16 shadow-inner">{item.icon}</div>
+                <p className="text-sm font-medium leading-relaxed text-white/96 drop-shadow-[0_4px_10px_rgba(0,0,0,0.2)]">{item.text}</p>
+              </div>
+            ))}
           </motion.div>
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.2, delay: 0.4 }}
-            className="font-serif text-5xl md:text-7xl lg:text-8xl font-medium text-[#FAF8F5] leading-[1.1] mb-8 drop-shadow-lg"
-          >
-            Не просто тур.
-            <br />
-            <span className="italic font-normal">Ваше состояние.</span>
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.8 }}
-            className="text-[#FAF8F5] text-lg md:text-xl font-medium max-w-xl mx-auto mb-12 drop-shadow-md"
-          >
-            Красивые, продуманные поездки в Аланию. Мы берем на себя заботы, оставляя вам эстетику, тепло и эмоции.
-          </motion.p>
-          <motion.a
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 1 }}
-            href="#formats"
-            className="group flex items-center gap-4 px-8 py-4 bg-[#C18C5D] text-white rounded-full hover:bg-[#a6754a] transition-all shadow-xl font-semibold hover:shadow-2xl hover:-translate-y-1"
-          >
-            <span className="text-sm tracking-widest uppercase">Выбрать формат</span>
-            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-          </motion.a>
         </div>
       </section>
 
-      <section className="py-24 md:py-32 px-6 md:px-12 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24 items-center">
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: '-100px' }}
-            transition={{ duration: 1 }}
-          >
-            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-[#2C2A28] mb-8 leading-tight font-medium">
-              Отдых, в котором
-              <br />
-              всё <span className="italic text-[#C18C5D]">уже продумано</span>
-            </h2>
-            <div className="space-y-6 text-[#2C2A28]/90 font-normal text-lg md:text-xl leading-relaxed">
+      <section className="mx-auto grid max-w-7xl gap-16 px-6 py-24 md:px-12 md:py-32 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+        <motion.div
+          initial={{ opacity: 0, x: -24 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, margin: '-120px' }}
+          transition={{ duration: 0.8 }}
+        >
+          <p className="mb-4 text-sm font-bold uppercase tracking-[0.25em] text-[#C18C5D]">О месте</p>
+          <h2 className="max-w-3xl font-serif text-4xl leading-tight md:text-6xl">
+            Аланья дарит не просто отдых,
+            <span className="italic text-[#C18C5D]"> а состояние</span>
+          </h2>
+          <div className="mt-8 space-y-5 text-lg leading-relaxed text-[#2C2A28]/82">
+            <p>
+              Здесь легко дышится, хочется замедлиться и снова почувствовать вкус жизни: море в пешей доступности,
+              горы на горизонте, хвойный воздух, зелень круглый год и мягкий солнечный ритм.
+            </p>
+            <p>
+              Аланья стала особенно близкой для русскоязычных гостей: здесь легко адаптироваться, комфортно
+              отдыхать и просто быть собой без стресса и лишней суеты.
+            </p>
+            <p>
+              Это место, где красиво в любое время года и где душа действительно выдыхает.
+            </p>
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.96 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.9 }}
+          className="relative"
+        >
+          <div className="overflow-hidden rounded-[2rem] shadow-2xl">
+            <img src="/photo1.png" alt="Терраса у моря в Аланье" className="aspect-[4/5] w-full object-cover" />
+          </div>
+          <div className="absolute -bottom-5 -left-5 rounded-[1.5rem] bg-[#1f4e68] px-5 py-4 text-sm font-medium text-white shadow-xl">
+            Красота, покой, солнце и море рядом
+          </div>
+        </motion.div>
+      </section>
+
+      <section className="bg-[#efe7de]">
+        <div className="mx-auto max-w-7xl px-6 py-24 md:px-12 md:py-28">
+          <div className="grid gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
+            <div>
+              <h2 className="font-serif text-4xl leading-tight md:text-6xl">
+                Авторские туры
+                <span className="italic text-[#C18C5D]"> с атмосферой, заботой и красотой</span>
+              </h2>
+            </div>
+
+            <div className="space-y-5 text-lg leading-relaxed text-[#2C2A28]/84">
               <p>
-                Мы не продаем стандартные путевки. Мы создаем сценарии, где вам не нужно принимать решения, искать
-                локации или заботиться о трансферах.
+                Мы создаём не шаблонные маршруты, а красивые истории отдыха: для двоих, для семьи, для друзей или
+                для яркого женского путешествия.
               </p>
               <p>
-                Вам остается лишь наслаждаться теплом Средиземноморья, бокалом вина на закате и временем с теми, кто
-                вам дорог.
+                Для нас отдых это не список экскурсий, а состояние. Утро с морским воздухом, красивые завтраки,
+                тёплые вечера, идеальные локации и ощущение, что всё складывается именно для вас.
+              </p>
+              <p>
+                Мы берём на себя организацию, проживание, трансферы, сопровождение и ритм поездки, чтобы вам осталось
+                только проживать главное: жизнь здесь и сейчас.
               </p>
             </div>
-          </motion.div>
-          <div className="relative">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.2 }}
-              className="aspect-[4/5] rounded-[2rem] overflow-hidden shadow-2xl"
-            >
-              <img src="/photo1.png" alt="Терраса у моря" className="w-full h-full object-cover" />
-            </motion.div>
-            <div className="absolute -bottom-8 -left-8 w-32 h-32 border-2 border-[#C18C5D]/40 rounded-full z-[-1]"></div>
           </div>
         </div>
       </section>
 
-      <section id="formats" className="py-24 bg-[#EBE5DF]">
-        <div className="px-6 md:px-12 max-w-7xl mx-auto">
-          <div className="text-center max-w-2xl mx-auto mb-20">
-            <span className="text-sm tracking-[0.2em] uppercase text-[#C18C5D] font-bold mb-4 block">
-              Коллекция впечатлений
-            </span>
-            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-[#2C2A28] font-medium">
-              Форматы путешествий
-            </h2>
+      <section id="tours" className="mx-auto max-w-7xl px-6 py-24 md:px-12 md:py-32">
+        <div className="mb-16 max-w-4xl">
+          <p className="mb-4 text-sm font-bold uppercase tracking-[0.25em] text-[#C18C5D]">Форматы туров</p>
+          <h2 className="font-serif text-4xl md:text-6xl">Выберите своё настроение отдыха</h2>          
+        </div>
+
+        <div className="grid gap-8 md:grid-cols-2">
+          {tours.map((tour, index) => (
+            <motion.article
+              key={tour.slug}
+              initial={{ opacity: 0, y: 28 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ duration: 0.65, delay: index * 0.08 }}
+              className="group overflow-hidden rounded-[2rem] border border-[#2C2A28]/6 bg-white shadow-[0_18px_60px_rgba(44,42,40,0.08)] transition hover:-translate-y-1 hover:shadow-[0_24px_70px_rgba(44,42,40,0.14)]"
+            >
+              <div className="relative">
+                <img src={tour.image} alt={tour.title} className="aspect-[4/3] w-full object-cover transition duration-700 group-hover:scale-[1.03]" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/15 to-transparent" />
+                <div className="absolute left-6 top-6 rounded-full bg-white/90 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.2em] text-[#2C2A28]">
+                  {tour.badge}
+                </div>
+                <div className="absolute bottom-6 left-6 right-6 text-white">
+                  <h3 className="font-serif text-4xl md:text-5xl">{tour.title}</h3>
+                  <p className="mt-2 max-w-xl text-sm leading-relaxed text-white/85 md:text-base">{tour.subtitle}</p>
+                </div>
+              </div>
+
+              <div className="p-7 md:p-8">
+                <div className="flex flex-wrap items-end justify-between gap-4 border-b border-[#2C2A28]/8 pb-6">
+                  <div>
+                    <div className="font-serif text-4xl text-[#C18C5D]">{tour.price}</div>
+                    <div className="mt-1 text-xs font-semibold uppercase tracking-[0.24em] text-[#2C2A28]/55">
+                      {tour.priceNote}
+                    </div>
+                  </div>
+                  <div className="rounded-full bg-[#f7f3ee] px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-[#2C2A28]/70">
+                    {tour.people}
+                  </div>
+                </div>
+
+                <p className="mt-6 text-base leading-relaxed text-[#2C2A28]/82">{tour.teaser}</p>
+
+                <ul className="mt-6 space-y-3">
+                  {tour.highlights.map((item) => (
+                    <li key={item} className="flex items-start gap-3 text-sm font-medium text-[#2C2A28]/82">
+                      <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#C18C5D]" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <button
+                    type="button"
+                    onClick={() => setSelectedTour(tour)}
+                    className="inline-flex items-center justify-center gap-2 rounded-full bg-[#C18C5D] px-6 py-3 text-sm font-bold uppercase tracking-[0.18em] text-white shadow-[0_14px_30px_rgba(193,140,93,0.28)] transition hover:-translate-y-0.5 hover:bg-[#aa774a] hover:shadow-[0_18px_38px_rgba(193,140,93,0.34)]"
+                  >
+                    Подробнее
+                    <ArrowRight className="h-4 w-4" />
+                  </button>
+
+                  <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#2C2A28]/45">
+                    Программа собирается индивидуально
+                  </span>
+                </div>
+              </div>
+            </motion.article>
+          ))}
+        </div>
+      </section>
+
+      <section className="bg-[#1f2930] text-white">
+        <div className="mx-auto max-w-7xl px-6 py-24 md:px-12 md:py-28">
+          <div className="mb-14 max-w-xl">
+            <h2 className="font-serif text-4xl md:text-6xl text-[#f3cda6]">Почему выбирают Tête-à-Tête Alanya</h2>
+            <p className="mt-6 text-lg leading-relaxed text-white/78">
+              Потому что мы создаём отдых не по шаблону, а по ощущению: красиво, комфортно, легко и действительно
+              запоминающеся.
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
-            {formats.map((format, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-50px' }}
-                transition={{ duration: 0.8, delay: i * 0.1 }}
-                className="flex flex-col bg-[#FAF8F5] rounded-[2rem] overflow-hidden shadow-lg hover:shadow-2xl border border-[#2C2A28]/5 hover:-translate-y-2 transition-all duration-500"
+          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+            {reasons.map((reason) => (
+              <div
+                key={reason.title}
+                className="rounded-[1.75rem] border border-white/10 bg-white/6 p-7 shadow-[0_16px_50px_rgba(0,0,0,0.16)] backdrop-blur-sm"
               >
-                <div className="relative aspect-[4/3] w-full overflow-hidden">
-                  <img
-                    src={format.img}
-                    alt={format.title}
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#000000]/60 via-transparent to-transparent z-0"></div>
-                  <div className="absolute bottom-6 left-6 md:bottom-8 md:left-8 z-10 pr-6">
-                    <h3 className="font-serif text-4xl md:text-5xl font-medium text-[#FAF8F5] drop-shadow-md">
-                      {format.title}
-                    </h3>
-                  </div>
-                </div>
-
-                <div className="p-8 md:p-10 flex flex-col flex-1">
-                  <p className="font-medium text-[#2C2A28] text-sm md:text-base leading-relaxed mb-6 italic">
-                    {format.positioning}
-                  </p>
-
-                  <div className="flex items-baseline gap-2 mb-6">
-                    <span className="font-serif text-3xl lg:text-4xl text-[#C18C5D]">{format.price}</span>
-                    {format.priceDesc && (
-                      <span className="text-[10px] md:text-xs uppercase tracking-widest text-[#2C2A28]/50">
-                        {format.priceDesc}
-                      </span>
-                    )}
-                  </div>
-
-                  <div className="flex flex-wrap gap-2 mb-8">
-                    {format.specs.map((spec, idx) => (
-                      <span
-                        key={idx}
-                        className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-[#2C2A28]/10 rounded-full text-[10px] uppercase tracking-wider text-[#2C2A28]/80 font-bold shadow-sm"
-                      >
-                        {spec.icon}
-                        {spec.text}
-                      </span>
-                    ))}
-                  </div>
-
-                  <div className="space-y-6 flex-1 flex flex-col justify-end">
-                    <div>
-                      <div className="text-[10px] font-bold tracking-[0.2em] uppercase text-[#C18C5D] mb-3 opacity-80">
-                        Что включено
-                      </div>
-                      <ul className="space-y-2.5">
-                        {format.included.map((inc, idx) => (
-                          <li key={idx} className="flex items-start gap-3 text-sm text-[#2C2A28]/90 font-medium">
-                            {inc.icon}
-                            <span>{inc.text}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    <div className="pt-6 border-t border-[#2C2A28]/10">
-                      <div className="text-[10px] font-bold tracking-[0.2em] uppercase text-[#C18C5D] mb-3 opacity-80">
-                        В сценарии
-                      </div>
-                      <ul className="space-y-2.5">
-                        {format.features.map((feature, idx) => (
-                          <li key={idx} className="flex items-start gap-3 text-sm text-[#2C2A28]/80 font-medium">
-                            {feature.icon}
-                            <span className="leading-relaxed">{feature.text}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
+                <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-white/8">{reason.icon}</div>
+                <h3 className="font-serif text-2xl">{reason.title}</h3>
+                <p className="mt-4 text-base leading-relaxed text-white/74">{reason.text}</p>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="py-24 md:py-32 px-6 md:px-12 max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-[#2C2A28] font-medium mb-8">
-            Как мы работаем
-          </h2>
-          <p className="text-[#2C2A28] text-lg md:text-xl font-normal max-w-2xl mx-auto leading-relaxed">
-            Выбирая Tête-à-Tête Alanya, вы выбираете легкую организацию и премиальный подход к каждой детали.
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-0">
+          <img src="/996-1920x800.jpg" alt="Закат в Аланье" className="h-full w-full object-cover" />
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(25,31,36,0.6),rgba(25,31,36,0.72))]" />
+        </div>
+
+        <div className="relative mx-auto max-w-5xl px-6 py-28 text-center text-white md:px-12 md:py-36">
+          <p className="mb-5 text-sm font-bold uppercase tracking-[0.25em] text-[#f3cda6]">Атмосфера</p>
+          <h2 className="font-serif text-4xl md:text-6xl">Атмосфера, которую хочется прожить</h2>
+          <p className="mx-auto mt-8 max-w-3xl text-lg leading-relaxed text-white/82 md:text-xl">
+            Тёплый воздух, кофе с видом на пальмы, красивые комплексы, бассейны, яхты, вечерние огни, уютные ужины,
+            смех и ощущение, что жизнь стала красивее. Именно из таких деталей рождается отдых, который хочется
+            повторить снова.
           </p>
         </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-          {advantages.map((feature, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: i * 0.2 }}
-              className="flex flex-col items-center text-center p-6 bg-white rounded-3xl shadow-lg border border-[#2C2A28]/5 hover:-translate-y-2 transition-transform duration-300"
-            >
-              <div className="w-20 h-20 rounded-full border-2 border-[#C18C5D]/30 flex items-center justify-center mb-6 bg-[#FAF8F5] shadow-inner">
-                {feature.icon}
-              </div>
-              <h3 className="font-serif text-2xl md:text-3xl font-medium text-[#2C2A28] mb-4">{feature.title}</h3>
-              <p className="text-[#2C2A28]/90 font-normal leading-relaxed text-base">{feature.desc}</p>
-            </motion.div>
-          ))}
-        </div>
       </section>
 
-      <section className="relative py-32 flex items-center justify-center shadow-2xl">
-        <div className="absolute inset-0">
-          <img
-            src="/996-1920x800.jpg"
-            alt="Вид на море на закате"
-            className="w-full h-full object-cover"
-            referrerPolicy="no-referrer"
-          />
-          <div className="absolute inset-0 bg-[#2C2A28]/60"></div>
-        </div>
-        <div className="relative z-10 text-center px-6 max-w-4xl">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1 }}
-          >
-            <h2 className="font-serif text-3xl md:text-5xl text-[#FAF8F5] font-medium leading-normal italic drop-shadow-xl">
-              "Самое дорогое в наши дни - это время и свобода выбора. Мы берем на себя планирование, чтобы вы могли
-              просто жить в моменте."
-            </h2>
-          </motion.div>
-        </div>
-      </section>
-
-      <section id="contact" className="py-24 md:py-32 px-6 md:px-12 max-w-4xl mx-auto text-center">
-        <span className="text-sm tracking-[0.2em] uppercase text-[#C18C5D] font-bold mb-6 block">Ваш следующий шаг</span>
-        <h2 className="font-serif text-4xl md:text-6xl text-[#2C2A28] font-medium mb-8">
-          Создадим ваш идеальный отдых?
-        </h2>
-        <p className="text-[#2C2A28] text-lg md:text-xl font-normal mb-12 max-w-2xl mx-auto leading-relaxed">
-          Напишите нам, чтобы обсудить формат вашей поездки, даты и пожелания. Мы ответим быстро и предложим несколько
-          красивых сценариев.
+      <section id="contact" className="mx-auto max-w-5xl px-6 py-24 text-center md:px-12 md:py-32">
+        <p className="mb-4 text-sm font-bold uppercase tracking-[0.25em] text-[#C18C5D]">Ваше красивое путешествие</p>
+        <h2 className="font-serif text-4xl leading-tight md:text-6xl">Может начаться уже сейчас</h2>
+        <p className="mx-auto mt-8 max-w-3xl text-lg leading-relaxed text-[#2C2A28]/82">
+          Расскажите, какой отдых вам хочется прожить, а мы соберём для вас авторский тур в Аланье с атмосферой,
+          комфортом, эстетикой и полным сопровождением.
+        </p>
+        <p className="mx-auto mt-5 max-w-[19rem] text-[15px] leading-[1.65] text-[#2C2A28]/66 sm:max-w-3xl sm:text-base sm:leading-relaxed">
+          Для двоих, для семьи, для подруг или для компании друзей. С морем, солнцем, красивыми локациями и
+          ощущением, что всё идеально сложилось именно для вас.
         </p>
 
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-          <a
-            href="https://t.me/Ir_lebedeva"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-center gap-3 px-10 py-5 w-full sm:w-auto bg-[#C18C5D] text-white font-bold uppercase tracking-widest text-sm rounded-full hover:bg-[#a6754a] transition-all duration-300 shadow-xl hover:shadow-2xl hover:-translate-y-1"
-          >
-            <Send className="w-5 h-5" />
-            <span>Телеграм</span>
-          </a>
+        <div className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
           <a
             href="https://wa.me/905362925205"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center gap-3 px-10 py-5 w-full sm:w-auto border-2 border-[#2C2A28] text-[#2C2A28] font-bold uppercase tracking-widest text-sm rounded-full hover:bg-[#25D366] hover:text-[#FAF8F5] transition-all duration-300 shadow-md hover:shadow-xl hover:-translate-y-1"
+            className="inline-flex w-full sm:min-w-[230px] sm:w-auto items-center justify-center gap-3 rounded-full bg-[#C18C5D] px-8 py-4 text-sm font-bold uppercase tracking-[0.2em] text-white transition hover:-translate-y-0.5 hover:bg-[#aa774a]"
           >
-            <MessageCircle className="w-5 h-5" />
-            <span>Whatsapp</span>
+            <MessageCircle className="h-4 w-4" />
+            Подобрать тур
+          </a>
+          <a
+            href="https://t.me/Ir_lebedeva"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex w-full sm:min-w-[230px] sm:w-auto items-center justify-center gap-2 rounded-full border border-[#2C2A28]/14 px-8 py-4 text-[13px] font-bold uppercase tracking-[0.16em] text-[#2C2A28] transition hover:border-[#C18C5D] hover:text-[#C18C5D] sm:gap-3 sm:text-sm sm:tracking-[0.2em]"
+          >
+            <Send className="h-4 w-4" />
+            Написать в Telegram
           </a>
         </div>
       </section>
+
+      <AnimatePresence>
+        {selectedTour ? (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-[#1c1b1a]/75 p-4 backdrop-blur-sm"
+            onClick={() => setSelectedTour(null)}
+          >
+            <button
+              type="button"
+              onClick={() => setSelectedTour(null)}
+              className="fixed right-10 top-10 z-[110] flex h-12 w-12 items-center justify-center rounded-full bg-[#1f2930]/94 text-white shadow-[0_14px_34px_rgba(0,0,0,0.28)] backdrop-blur-sm transition hover:bg-[#172028] md:hidden"
+              aria-label="Закрыть"
+            >
+              <X className="h-5 w-5" />
+            </button>
+
+            <motion.div
+              initial={{ opacity: 0, y: 24, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 18, scale: 0.98 }}
+              transition={{ duration: 0.25 }}
+              className="relative max-h-[92vh] w-full max-w-4xl overflow-y-auto rounded-[2rem] bg-[#fbf8f4] shadow-[0_28px_90px_rgba(0,0,0,0.3)]"
+              onClick={(event) => event.stopPropagation()}
+            >
+              <div className="relative">
+                <img
+                  src={selectedTour.image}
+                  alt={selectedTour.title}
+                  className="h-[250px] w-full object-cover sm:h-[280px] md:h-auto md:aspect-[16/7]"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent" />
+
+                <button
+                  type="button"
+                  onClick={() => setSelectedTour(null)}
+                  className="absolute right-4 top-4 hidden h-11 w-11 items-center justify-center rounded-full bg-white/90 text-[#2C2A28] transition hover:bg-white md:flex md:right-5 md:top-5"
+                  aria-label="Закрыть"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+
+                <div className="absolute left-5 right-20 top-5 text-white md:left-8 md:right-24 md:top-8">
+                  <div className="inline-flex rounded-full bg-white/90 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.22em] text-[#2C2A28]">
+                    {selectedTour.badge}
+                  </div>
+                </div>
+
+                <div className="absolute bottom-5 left-5 right-5 text-white md:bottom-8 md:left-8 md:right-8">
+                  <h3 className="font-serif text-4xl md:text-6xl">{selectedTour.title}</h3>
+                  <p className="mt-3 max-w-2xl text-sm leading-relaxed text-white/88 md:text-base">
+                    {selectedTour.subtitle}
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid gap-10 p-6 md:grid-cols-[0.95fr_1.05fr] md:p-8 lg:p-10">
+                <div className="space-y-6">
+                  <div className="rounded-[1.5rem] border border-[#2C2A28]/8 bg-white p-6 shadow-sm">
+                    <div className="font-serif text-4xl text-[#C18C5D]">{selectedTour.price}</div>
+                    <div className="mt-1 text-xs font-semibold uppercase tracking-[0.24em] text-[#2C2A28]/55">
+                      {selectedTour.priceNote}
+                    </div>
+
+                    <div className="mt-6 flex flex-wrap gap-3">
+                      <div className="inline-flex items-center gap-2 rounded-full bg-[#f7f3ee] px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-[#2C2A28]/75">
+                        <Users className="h-4 w-4 text-[#C18C5D]" />
+                        {selectedTour.people}
+                      </div>
+                      <div className="inline-flex items-center gap-2 rounded-full bg-[#f7f3ee] px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-[#2C2A28]/75">
+                        <Plane className="h-4 w-4 text-[#C18C5D]" />
+                        Перелёт отдельно
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="rounded-[1.5rem] border border-[#C18C5D]/20 bg-[#fffaf4] p-6">
+                    <div className="mb-4 text-xs font-bold uppercase tracking-[0.24em] text-[#C18C5D]">Что включено</div>
+                    <ul className="space-y-3">
+                      {commonIncludes.map((item) => (
+                        <li key={item} className="flex items-start gap-3 text-sm leading-relaxed text-[#2C2A28]/82">
+                          <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#C18C5D]" />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
+                <div>
+                  <div className="text-xs font-bold uppercase tracking-[0.24em] text-[#C18C5D]">Подробно о формате</div>
+                  <div className="mt-4 space-y-4 text-base leading-relaxed text-[#2C2A28]/84 md:text-lg">
+                    {selectedTour.description.map((paragraph) => (
+                      <p key={paragraph}>{paragraph}</p>
+                    ))}
+                  </div>
+
+                  <div className="mt-8">
+                    <div className="mb-4 text-xs font-bold uppercase tracking-[0.24em] text-[#C18C5D]">Основные акценты</div>
+                    <ul className="space-y-3">
+                      {selectedTour.highlights.map((item) => (
+                        <li key={item} className="flex items-start gap-3 text-sm leading-relaxed text-[#2C2A28]/82 md:text-base">
+                          <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#C18C5D]" />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="mt-8 rounded-[1.5rem] bg-[#1f2930] p-6 text-white">
+                    <p className="text-base leading-relaxed text-white/82">
+                      Каждая программа собирается индивидуально под гостей, под настроение, под желания и под формат
+                      отдыха. Мы адаптируем насыщенность, ритм и наполнение именно под вас.
+                    </p>
+
+                    <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+                      <a
+                        href="https://wa.me/905362925205"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center justify-center gap-2 rounded-full bg-[#C18C5D] px-6 py-3 text-[11px] font-bold uppercase tracking-[0.12em] text-white transition hover:bg-[#aa774a] sm:text-sm sm:tracking-[0.18em]"
+                      >
+                        <MessageCircle className="h-4 w-4" />
+                        Подобрать этот тур
+                      </a>                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </motion.div>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
     </div>
   );
 }

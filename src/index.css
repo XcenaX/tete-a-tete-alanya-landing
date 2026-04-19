@@ -14,4 +14,15 @@ body {
   background-color: var(--color-warm-bg);
   color: var(--color-warm-dark);
   font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+a,
+button {
+  cursor: pointer;
 }
