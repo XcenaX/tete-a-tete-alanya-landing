@@ -426,7 +426,7 @@ export default function App() {
                 className="rounded-[1.75rem] border border-white/10 bg-white/6 p-7 shadow-[0_16px_50px_rgba(0,0,0,0.16)] backdrop-blur-sm"
               >
                 <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-white/8">{reason.icon}</div>
-                <h3 className="font-serif text-2xl">{reason.title}</h3>
+                <h3 className="font-serif text-3xl">{reason.title}</h3>
                 <p className="mt-4 text-base leading-relaxed text-white/74">{reason.text}</p>
               </div>
             ))}
@@ -441,8 +441,7 @@ export default function App() {
         </div>
 
         <div className="relative mx-auto max-w-5xl px-6 py-28 text-center text-white md:px-12 md:py-36">
-          <p className="mb-5 text-sm font-bold uppercase tracking-[0.25em] text-[#f3cda6]">Атмосфера</p>
-          <h2 className="font-serif text-4xl md:text-6xl">Атмосфера, которую хочется прожить</h2>
+          <h2 className="font-serif text-4xl md:text-6xl text-[#f3cda6]">Атмосфера, которую хочется прожить</h2>
           <p className="mx-auto mt-8 max-w-3xl text-lg leading-relaxed text-white/82 md:text-xl">
             Тёплый воздух, кофе с видом на пальмы, красивые комплексы, бассейны, яхты, вечерние огни, уютные ужины,
             смех и ощущение, что жизнь стала красивее. Именно из таких деталей рождается отдых, который хочется
@@ -452,7 +451,7 @@ export default function App() {
       </section>
 
       <section id="contact" className="mx-auto max-w-5xl px-6 py-24 text-center md:px-12 md:py-32">
-        <p className="mb-4 text-sm font-bold uppercase tracking-[0.25em] text-[#C18C5D]">Ваше красивое путешествие</p>
+        <p className="mb-4 text-2xl font-bold uppercase tracking-[0.25em] text-[#C18C5D]">Ваше красивое путешествие</p>
         <h2 className="font-serif text-4xl leading-tight md:text-6xl">Может начаться уже сейчас</h2>
         <p className="mx-auto mt-8 max-w-3xl text-lg leading-relaxed text-[#2C2A28]/82">
           Расскажите, какой отдых вам хочется прожить, а мы соберём для вас авторский тур в Аланье с атмосферой,
