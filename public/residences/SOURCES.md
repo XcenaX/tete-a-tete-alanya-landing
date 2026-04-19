@@ -16,3 +16,6 @@ Gold City
 
 Cebeci Towers
 - https://www.cebecigroup.com/en/cebeci-towers
+
+Hero image
+- https://unsplash.com/photos/photo-de-paysage-dune-station-balneaire-mPCnwoUctkU

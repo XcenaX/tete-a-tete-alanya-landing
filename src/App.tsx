@@ -251,18 +251,14 @@ export default function App() {
 
       <section className="relative flex min-h-screen items-center">
         <div className="absolute inset-0">
-          <img
-            src="/residences/gold-city/goldcity-aerial-1.jpg"
-            alt="Побережье и море в Аланье"
-            className="h-full w-full object-cover"
-          />
+          <img src="/hero-alanya-unsplash.jpg" alt="Побережье и море в Аланье" className="h-full w-full object-cover" />
           <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(3,35,55,0.32),rgba(3,67,102,0.2)_32%,rgba(250,248,245,0.92)_100%)]" />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_30%,rgba(128,219,255,0.3),rgba(128,219,255,0.08)_24%,rgba(128,219,255,0)_44%)]" />
           <div className="absolute inset-y-0 left-0 w-full bg-[radial-gradient(circle_at_24%_44%,rgba(0,46,76,0.34),rgba(0,46,76,0.12)_30%,rgba(0,46,76,0)_60%)]" />
         </div>
 
         <div className="relative z-10 mx-auto flex max-w-7xl flex-col gap-12 px-6 pb-20 pt-36 md:px-12 lg:flex-row lg:items-end lg:justify-between">
-          <div className="max-w-3xl rounded-[2rem] bg-[linear-gradient(135deg,rgba(4,44,68,0.44),rgba(4,94,138,0.18))] px-6 py-8 shadow-[0_24px_80px_rgba(0,43,67,0.18)] backdrop-blur-[8px] md:px-8 md:py-10">
+          <div className="max-w-3xl rounded-[2rem] bg-[linear-gradient(135deg,rgba(4,44,68,0.44),rgba(4,94,138,0.18))] px-6 py-8 shadow-[0_24px_80px_rgba(0,43,67,0.18)] backdrop-blur-[2px] md:px-8 md:py-10">
             <motion.div
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
@@ -319,7 +315,7 @@ export default function App() {
             </motion.div>
           </div>
 
-          <motion.div
+          {/* <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.45 }}
@@ -338,7 +334,7 @@ export default function App() {
                 <p className="text-sm font-medium leading-relaxed text-white/96 drop-shadow-[0_4px_10px_rgba(0,0,0,0.2)]">{item.text}</p>
               </div>
             ))}
-          </motion.div>
+          </motion.div> */}
         </div>
       </section>
 
@@ -394,10 +390,11 @@ export default function App() {
         <div className="mb-14 max-w-4xl">
           <p className="mb-4 text-sm font-bold uppercase tracking-[0.25em] text-[#0d7aa7]">Проживание</p>
           <h2 className="font-serif text-4xl leading-[1.05] md:text-6xl">
-            Комплексы,
-            <span className="italic text-[#0d7aa7]"> в которых отдых выглядит</span>
+            Комплексы, где
             <br />
-            действительно красиво
+            <span className="italic text-[#0d7aa7] md:whitespace-nowrap">море, комфорт и красота</span>
+            <br />
+            соединяются вместе
           </h2>
         </div>
 
