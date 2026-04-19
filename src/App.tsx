@@ -120,9 +120,78 @@ const reasons = [
   },
 ];
 
+const residences = [
+  {
+    title: 'Serenity Residence',
+    location: 'Махмутлар, Алания',
+    image: '/residences/serenity-residence/serenity-gallery-1.jpeg',
+    accent: 'Светлые апартаменты для спокойного, красивого отдыха у моря',
+    details: ['видовые балконы', 'мягкий ритм', 'светлые интерьеры'],
+    description: [
+      'Serenity Residence подойдёт тем, кто хочет проживать отдых мягко, спокойно и эстетично: с красивым светом, приятными интерьерами и ощущением уединения.',
+      'Это формат проживания, где особенно ценятся тишина, вид, уютные апартаменты и то ощущение, что после моря и прогулок хочется возвращаться именно сюда.',
+    ],
+    gallery: [
+      '/residences/serenity-residence/serenity-exterior-1.jpeg',
+      '/residences/serenity-residence/serenity-interior-1.jpeg',
+      '/residences/serenity-residence/serenity-interior-2.jpeg',
+    ],
+  },
+  {
+    title: 'Azura Park',
+    location: 'Махмутлар, Алания',
+    image: '/residences/azura-park/azura-pool-1.jpg',
+    accent: 'Большая территория, бассейны и ощущение настоящего resort life',
+    details: ['бассейны', 'resort-атмосфера', 'просторная территория'],
+    description: [
+      'Azura Park выбирают, когда хочется более насыщенной курортной атмосферы: большая территория, вода, движение, инфраструктура и ощущение полноценного отдыха внутри самого комплекса.',
+      'Здесь легко собрать красивый отпуск с акцентом на бассейны, комфорт и то самое resort-настроение, которое чувствуется с первого дня.',
+    ],
+    gallery: [
+      '/residences/azura-park/azura-exterior-1.jpg',
+      '/residences/azura-park/azura-exterior-2.jpg',
+      '/residences/azura-park/azura-interior-1.jpg',
+    ],
+  },
+  {
+    title: 'Gold City',
+    location: 'Каргыджак, Алания',
+    image: '/residences/gold-city/goldcity-aerial-1.jpg',
+    accent: 'Панорамные виды, воздух, простор и сильное ощущение масштаба',
+    details: ['панорама моря', 'высота и простор', 'курортная инфраструктура'],
+    description: [
+      'Gold City — это про масштаб, панорамы и впечатление. Такой вариант особенно хорош, когда хочется вау-вида, воздуха, простора и яркого визуального опыта.',
+      'Комплекс создаёт ощущение большого красивого курорта, где проживание само становится частью впечатлений от поездки.',
+    ],
+    gallery: [
+      '/residences/gold-city/goldcity-aerial-2.jpg',
+      '/residences/gold-city/goldcity-pool-1.jpg',
+      '/residences/gold-city/goldcity-room-1.jpg',
+    ],
+  },
+  {
+    title: 'Cebeci Towers',
+    location: 'Махмутлар, Алания',
+    image: '/residences/cebeci-towers/cebeci-exterior-2.jpg',
+    accent: 'Современный комплекс с городским вайбом и красивыми видами',
+    details: ['новый комплекс', 'архитектура', 'видовые апартаменты'],
+    description: [
+      'Cebeci Towers подойдёт тем, кому ближе более современная эстетика: новый комплекс, выразительная архитектура и ощущение динамичной красивой жизни у моря.',
+      'Это хороший выбор, когда хочется сочетать комфортный уровень проживания, эффектные виды и более городской характер отдыха.',
+    ],
+    gallery: [
+      '/residences/cebeci-towers/cebeci-exterior-1.jpg',
+      '/residences/cebeci-towers/cebeci-view-1.jpg',
+      '/residences/cebeci-towers/cebeci-interior-1.jpg',
+    ],
+  },
+];
+
 export default function App() {
   const [scrolled, setScrolled] = useState(false);
   const [selectedTour, setSelectedTour] = useState<(typeof tours)[number] | null>(null);
+  const [selectedResidence, setSelectedResidence] = useState<(typeof residences)[number] | null>(null);
+  const [selectedResidenceImage, setSelectedResidenceImage] = useState<{ src: string; alt: string } | null>(null);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 48);
@@ -131,7 +200,7 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    if (!selectedTour) {
+    if (!selectedTour && !selectedResidence && !selectedResidenceImage) {
       document.body.style.overflow = '';
       return;
     }
@@ -139,6 +208,8 @@ export default function App() {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         setSelectedTour(null);
+        setSelectedResidence(null);
+        setSelectedResidenceImage(null);
       }
     };
 
@@ -149,13 +220,13 @@ export default function App() {
       document.body.style.overflow = '';
       window.removeEventListener('keydown', onKeyDown);
     };
-  }, [selectedTour]);
+  }, [selectedResidence, selectedResidenceImage, selectedTour]);
 
   return (
     <div className="min-h-screen overflow-x-hidden bg-[#f7f3ee] text-[#2C2A28]">
       <nav
         className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
-          scrolled ? 'bg-[#f7f3ee]/95 shadow-lg backdrop-blur-md' : 'bg-gradient-to-b from-black/45 to-transparent'
+          scrolled ? 'bg-[#f7f3ee]/90 shadow-lg backdrop-blur-md' : 'bg-gradient-to-b from-[#052b41]/55 via-[#052b41]/18 to-transparent'
         }`}
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-5 md:px-12 md:py-4">
@@ -180,18 +251,23 @@ export default function App() {
 
       <section className="relative flex min-h-screen items-center">
         <div className="absolute inset-0">
-          <img src="/658-1920x1080-blur_1.jpg" alt="Побережье Аланьи" className="h-full w-full object-cover" />
-          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(26,25,24,0.58),rgba(26,25,24,0.34)_34%,rgba(247,243,238,0.94)_100%)]" />
-          <div className="absolute inset-y-0 left-0 w-full bg-[radial-gradient(circle_at_24%_44%,rgba(32,31,29,0.52),rgba(32,31,29,0.18)_30%,rgba(32,31,29,0)_58%)]" />
+          <img
+            src="/residences/gold-city/goldcity-aerial-1.jpg"
+            alt="Побережье и море в Аланье"
+            className="h-full w-full object-cover"
+          />
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(3,35,55,0.32),rgba(3,67,102,0.2)_32%,rgba(250,248,245,0.92)_100%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_30%,rgba(128,219,255,0.3),rgba(128,219,255,0.08)_24%,rgba(128,219,255,0)_44%)]" />
+          <div className="absolute inset-y-0 left-0 w-full bg-[radial-gradient(circle_at_24%_44%,rgba(0,46,76,0.34),rgba(0,46,76,0.12)_30%,rgba(0,46,76,0)_60%)]" />
         </div>
 
         <div className="relative z-10 mx-auto flex max-w-7xl flex-col gap-12 px-6 pb-20 pt-36 md:px-12 lg:flex-row lg:items-end lg:justify-between">
-          <div className="max-w-3xl rounded-[2rem] bg-[linear-gradient(135deg,rgba(25,24,23,0.34),rgba(25,24,23,0.14))] px-6 py-8 shadow-[0_24px_80px_rgba(0,0,0,0.16)] backdrop-blur-[6px] md:px-8 md:py-10">
+          <div className="max-w-3xl rounded-[2rem] bg-[linear-gradient(135deg,rgba(4,44,68,0.44),rgba(4,94,138,0.18))] px-6 py-8 shadow-[0_24px_80px_rgba(0,43,67,0.18)] backdrop-blur-[8px] md:px-8 md:py-10">
             <motion.div
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7 }}
-              className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-white/90 backdrop-blur-sm sm:text-xs sm:tracking-[0.3em]"
+              className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/14 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-white/95 backdrop-blur-sm sm:text-xs sm:tracking-[0.3em]"
             >
               <Star className="h-3.5 w-3.5" />
               Жизнь — Здесь и Сейчас!
@@ -205,7 +281,7 @@ export default function App() {
             >
               Аланья
               <br />
-              <span className="italic text-[#f8dfc5]">рай на земле!</span>
+              <span className="italic text-[#dbf6ff]">рай на земле!</span>
             </motion.h1>
 
             <motion.p
@@ -214,8 +290,8 @@ export default function App() {
               transition={{ duration: 0.8, delay: 0.25 }}
               className="mt-8 max-w-2xl text-lg leading-relaxed text-white/96 drop-shadow-[0_6px_18px_rgba(0,0,0,0.28)] md:text-xl"
             >
-              Место, где море, горы, солнце, зелень и спокойствие соединяются в атмосферу красивой жизни и отдыха,
-              который запоминается состоянием!
+              Место, где море, небо, горы, пальмы и солнце соединяются в атмосферу красивой жизни и отдыха, который
+              запоминается состоянием!
             </motion.p>
 
             <motion.div
@@ -226,7 +302,7 @@ export default function App() {
             >
               <a
                 href="#tours"
-                className="inline-flex items-center justify-center gap-3 rounded-full bg-[#C18C5D] px-8 py-4 text-sm font-bold uppercase tracking-[0.2em] text-white transition hover:-translate-y-0.5 hover:bg-[#aa774a]"
+                className="inline-flex items-center justify-center gap-3 rounded-full bg-[#7dd3ea] px-8 py-4 text-sm font-bold uppercase tracking-[0.2em] text-[#083047] transition hover:-translate-y-0.5 hover:bg-[#93def2]"
               >
                 Выбрать тур
                 <ArrowRight className="h-4 w-4" />
@@ -235,7 +311,7 @@ export default function App() {
                 href="https://wa.me/905362925205"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-3 rounded-full border border-white/40 bg-white/10 px-8 py-4 text-sm font-bold uppercase tracking-[0.2em] text-white backdrop-blur-sm transition hover:bg-white/15"
+                className="inline-flex items-center justify-center gap-3 rounded-full border border-white/45 bg-white/12 px-8 py-4 text-sm font-bold uppercase tracking-[0.2em] text-white backdrop-blur-sm transition hover:bg-white/18"
               >
                 <MessageCircle className="h-4 w-4" />
                 WhatsApp
@@ -251,14 +327,14 @@ export default function App() {
           >
             {[
               { icon: <Waves className="h-5 w-5" />, text: 'Море и горы рядом' },
-              { icon: <Sun className="h-5 w-5" />, text: 'Солнце почти круглый год' },
+              { icon: <Sun className="h-5 w-5" />, text: 'Голубое небо и мягкий климат' },
               { icon: <Palmtree className="h-5 w-5" />, text: 'Атмосфера красивой жизни' },
             ].map((item) => (
               <div
                 key={item.text}
-                className="rounded-[1.75rem] border border-white/18 bg-[linear-gradient(180deg,rgba(255,255,255,0.18),rgba(255,255,255,0.1))] p-5 text-white shadow-[0_18px_45px_rgba(0,0,0,0.18)] backdrop-blur-md"
+                className="rounded-[1.75rem] border border-white/24 bg-[linear-gradient(180deg,rgba(255,255,255,0.24),rgba(255,255,255,0.12))] p-5 text-white shadow-[0_18px_45px_rgba(0,49,80,0.16)] backdrop-blur-md"
               >
-                <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-full bg-white/16 shadow-inner">{item.icon}</div>
+                <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-full bg-white/18 shadow-inner">{item.icon}</div>
                 <p className="text-sm font-medium leading-relaxed text-white/96 drop-shadow-[0_4px_10px_rgba(0,0,0,0.2)]">{item.text}</p>
               </div>
             ))}
@@ -302,12 +378,68 @@ export default function App() {
           className="relative"
         >
           <div className="overflow-hidden rounded-[2rem] shadow-2xl">
-            <img src="/photo1.png" alt="Терраса у моря в Аланье" className="aspect-[4/5] w-full object-cover" />
+            <img
+              src="/residences/azura-park/azura-exterior-1.jpg"
+              alt="Апартаменты и море в Аланье"
+              className="aspect-[4/5] w-full object-cover"
+            />
           </div>
-          <div className="absolute -bottom-5 -left-5 rounded-[1.5rem] bg-[#1f4e68] px-5 py-4 text-sm font-medium text-white shadow-xl">
+          <div className="absolute -bottom-5 -left-5 rounded-[1.5rem] bg-[#1176a0] px-5 py-4 text-sm font-medium text-white shadow-xl">
             Красота, покой, солнце и море рядом
           </div>
         </motion.div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-6 py-24 md:px-12 md:py-32">
+        <div className="mb-14 max-w-4xl">
+          <p className="mb-4 text-sm font-bold uppercase tracking-[0.25em] text-[#0d7aa7]">Проживание</p>
+          <h2 className="font-serif text-4xl leading-[1.05] md:text-6xl">
+            Комплексы,
+            <span className="italic text-[#0d7aa7]"> в которых отдых выглядит</span>
+            <br />
+            действительно красиво
+          </h2>
+        </div>
+
+        <div className="grid gap-8 lg:grid-cols-2">
+          {residences.map((residence, index) => (
+            <motion.article
+              key={residence.title}
+              initial={{ opacity: 0, y: 26 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ duration: 0.6, delay: index * 0.08 }}
+              className="overflow-hidden rounded-[2rem] border border-[#2C2A28]/6 bg-white shadow-[0_18px_60px_rgba(44,42,40,0.08)] transition hover:-translate-y-1 hover:shadow-[0_24px_70px_rgba(44,42,40,0.12)]"
+            >
+              <div className="relative">
+                <img src={residence.image} alt={residence.title} className="aspect-[16/10] w-full object-cover" />
+                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(4,40,62,0.2),rgba(4,40,62,0.08)_24%,rgba(4,40,62,0.58)_68%,rgba(4,40,62,0.82)_100%)]" />
+                <div className="absolute inset-y-0 left-0 w-[72%] bg-[linear-gradient(90deg,rgba(6,28,42,0.54),rgba(6,28,42,0.18)_62%,rgba(6,28,42,0)_100%)]" />
+                <div className="absolute bottom-0 left-0 right-0 p-6 text-white md:p-7">
+                  <div className="inline-flex rounded-full border border-white/24 bg-[#083047]/72 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.22em] text-[#d8f5ff] shadow-[0_10px_24px_rgba(0,0,0,0.18)] backdrop-blur-md">
+                    {residence.location}
+                  </div>
+                  <h3 className="mt-4 max-w-[11ch] font-serif text-4xl leading-[0.95] text-white drop-shadow-[0_8px_24px_rgba(0,0,0,0.42)] md:text-[2.6rem]">
+                    {residence.title}
+                  </h3>
+                </div>
+              </div>
+
+              <div className="flex justify-stretch p-6 md:justify-end md:p-7">
+                <div className="w-full md:w-auto">
+                  <button
+                    type="button"
+                    onClick={() => setSelectedResidence(residence)}
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#0d7aa7] px-6 py-3 text-sm font-bold uppercase tracking-[0.18em] text-white shadow-[0_14px_30px_rgba(13,122,167,0.24)] transition hover:-translate-y-0.5 hover:bg-[#0a688e] md:w-auto md:min-w-[220px]"
+                  >
+                    Подробнее
+                    <ArrowRight className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
+            </motion.article>
+          ))}
+        </div>
       </section>
 
       <section className="bg-[#efe7de]">
@@ -414,10 +546,10 @@ export default function App() {
         </div>
       </section>
 
-      <section className="bg-[#1f2930] text-white">
+      <section className="bg-[linear-gradient(180deg,#103649,#0f2430)] text-white">
         <div className="mx-auto max-w-7xl px-6 py-24 md:px-12 md:py-28">
           <div className="mb-14 max-w-xl">
-            <h2 className="font-serif text-4xl md:text-6xl text-[#f3cda6]">Почему выбирают Tête-à-Tête Alanya</h2>
+            <h2 className="font-serif text-4xl md:text-6xl text-[#c6efff]">Почему выбирают Tête-à-Tête Alanya</h2>
             <p className="mt-6 text-lg leading-relaxed text-white/78">
               Потому что мы создаём отдых не по шаблону, а по ощущению: красиво, комфортно, легко и действительно
               запоминающеся!
@@ -441,12 +573,12 @@ export default function App() {
 
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
-          <img src="/996-1920x800.jpg" alt="Закат в Аланье" className="h-full w-full object-cover" />
-          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(25,31,36,0.6),rgba(25,31,36,0.72))]" />
+          <img src="/residences/cebeci-towers/cebeci-view-1.jpg" alt="Вид на Аланью" className="h-full w-full object-cover" />
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(4,43,67,0.56),rgba(4,43,67,0.74))]" />
         </div>
 
         <div className="relative mx-auto max-w-5xl px-6 py-28 text-center text-white md:px-12 md:py-36">
-          <h2 className="font-serif text-4xl md:text-6xl text-[#f3cda6]">Атмосфера, которую хочется прожить!</h2>
+          <h2 className="font-serif text-4xl md:text-6xl text-[#d4f4ff]">Атмосфера, которую хочется прожить!</h2>
           <p className="mx-auto mt-8 max-w-3xl text-lg leading-relaxed text-white/82 md:text-xl">
             Тёплый воздух, кофе с видом на пальмы, красивые комплексы, бассейны, яхты, вечерние огни, уютные ужины,
             смех и ощущение, что жизнь стала красивее. Именно из таких деталей рождается отдых, который хочется
@@ -613,7 +745,7 @@ export default function App() {
                         className="inline-flex items-center justify-center gap-2 rounded-full bg-[#C18C5D] px-6 py-3 text-[11px] font-bold uppercase tracking-[0.12em] text-white transition hover:bg-[#aa774a] sm:text-sm sm:tracking-[0.18em]"
                       >
                         <MessageCircle className="h-4 w-4" />
-                        Подобрать этот тур
+                        Подобрать тур
                       </a>                      
                     </div>
                   </div>
@@ -621,6 +753,168 @@ export default function App() {
               </div>
 
             </motion.div>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {selectedResidence ? (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-[#1c1b1a]/75 p-4 backdrop-blur-sm"
+            onClick={() => setSelectedResidence(null)}
+          >
+            <button
+              type="button"
+              onClick={() => setSelectedResidence(null)}
+              className="fixed right-10 top-10 z-[110] flex h-12 w-12 items-center justify-center rounded-full bg-[#1f2930]/94 text-white shadow-[0_14px_34px_rgba(0,0,0,0.28)] backdrop-blur-sm transition hover:bg-[#172028] md:hidden"
+              aria-label="Закрыть"
+            >
+              <X className="h-5 w-5" />
+            </button>
+
+            <motion.div
+              initial={{ opacity: 0, y: 24, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 18, scale: 0.98 }}
+              transition={{ duration: 0.25 }}
+              className="relative max-h-[92vh] w-full max-w-5xl overflow-y-auto rounded-[2rem] bg-[#fbf8f4] shadow-[0_28px_90px_rgba(0,0,0,0.3)]"
+              onClick={(event) => event.stopPropagation()}
+            >
+              <div className="relative">
+                <img
+                  src={selectedResidence.image}
+                  alt={selectedResidence.title}
+                  className="h-[250px] w-full object-cover sm:h-[300px] md:h-auto md:aspect-[16/7]"
+                />
+                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(3,20,31,0.16),rgba(3,20,31,0.06)_28%,rgba(3,20,31,0.58)_72%,rgba(3,20,31,0.82)_100%)]" />
+                <div className="absolute inset-y-0 left-0 w-[68%] bg-[linear-gradient(90deg,rgba(6,28,42,0.48),rgba(6,28,42,0.16)_58%,rgba(6,28,42,0)_100%)]" />
+
+                <button
+                  type="button"
+                  onClick={() => setSelectedResidence(null)}
+                  className="absolute right-4 top-4 hidden h-11 w-11 items-center justify-center rounded-full bg-white/90 text-[#2C2A28] transition hover:bg-white md:flex md:right-5 md:top-5"
+                  aria-label="Закрыть"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+
+                <div className="absolute left-5 right-5 top-5 text-white md:left-8 md:right-24 md:top-8">
+                  <div className="inline-flex rounded-full border border-white/18 bg-[#083047]/78 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.22em] text-[#e6f9ff] shadow-[0_10px_24px_rgba(0,0,0,0.18)] backdrop-blur-md">
+                    {selectedResidence.location}
+                  </div>
+                </div>
+
+                <div className="absolute bottom-5 left-5 right-5 text-white md:bottom-8 md:left-8 md:right-8">
+                  <h3 className="max-w-[11ch] font-serif text-4xl leading-[0.95] text-white drop-shadow-[0_10px_26px_rgba(0,0,0,0.46)] md:text-6xl">
+                    {selectedResidence.title}
+                  </h3>
+                </div>
+              </div>
+
+              <div className="grid gap-10 p-6 md:grid-cols-[0.92fr_1.08fr] md:p-8 lg:p-10">
+                <div className="space-y-6">
+                  <div className="rounded-[1.5rem] border border-[#2C2A28]/8 bg-white p-6 shadow-sm">
+                    <div className="text-xs font-bold uppercase tracking-[0.24em] text-[#0d7aa7]">Ключевые акценты</div>
+                    <ul className="mt-5 space-y-3">
+                      {selectedResidence.details.map((item) => (
+                        <li key={item} className="flex items-start gap-3 text-sm leading-relaxed text-[#2C2A28]/82 md:text-base">
+                          <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#0d7aa7]" />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="rounded-[1.5rem] border border-[#0d7aa7]/16 bg-[#f5fbfe] p-6">
+                    <div className="mb-4 text-xs font-bold uppercase tracking-[0.24em] text-[#0d7aa7]">Галерея комплекса</div>
+                    <div className="grid grid-cols-2 gap-3">
+                      {[selectedResidence.image, ...selectedResidence.gallery].map((image, index) => (
+                        <button
+                          key={`${image}-${index}`}
+                          type="button"
+                          onClick={() =>
+                            setSelectedResidenceImage({
+                              src: image,
+                              alt: `${selectedResidence.title} фото ${index + 1}`,
+                            })
+                          }
+                          className="overflow-hidden rounded-[1.2rem] bg-white text-left transition hover:opacity-95"
+                        >
+                          <img
+                            src={image}
+                            alt={`${selectedResidence.title} фото ${index + 1}`}
+                            className="aspect-[4/3] w-full cursor-zoom-in object-cover"
+                          />
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <div className="text-xs font-bold uppercase tracking-[0.24em] text-[#0d7aa7]">О комплексе</div>
+                  <div className="mt-4 space-y-4 text-base leading-relaxed text-[#2C2A28]/84 md:text-lg">
+                    {selectedResidence.description.map((paragraph) => (
+                      <p key={paragraph}>{paragraph}</p>
+                    ))}
+                  </div>
+
+                  <div className="mt-8 rounded-[1.5rem] bg-[#123547] p-6 text-white">
+                    <p className="text-base leading-relaxed text-white/84">
+                      Мы подбираем комплекс под ваш формат отдыха: более спокойный, более курортный, более видовой или
+                      более современный по атмосфере.
+                    </p>
+
+                    <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+                      <a
+                        href="https://wa.me/905362925205"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center justify-center gap-2 rounded-full bg-[#7dd3ea] px-6 py-3 text-[14px] font-bold uppercase tracking-[0.08em] text-[#083047] transition hover:bg-[#93def2] sm:text-sm sm:tracking-[0.18em]"
+                      >
+                        <MessageCircle className="h-4 w-4" />
+                        Написать
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {selectedResidenceImage ? (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[130] flex items-center justify-center bg-black/88 p-4 backdrop-blur-md"
+            onClick={() => setSelectedResidenceImage(null)}
+          >
+            <button
+              type="button"
+              onClick={() => setSelectedResidenceImage(null)}
+              className="absolute right-5 top-5 flex h-12 w-12 items-center justify-center rounded-full bg-white/12 text-white transition hover:bg-white/18"
+              aria-label="Закрыть изображение"
+            >
+              <X className="h-5 w-5" />
+            </button>
+
+            <motion.img
+              initial={{ opacity: 0, scale: 0.96 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.96 }}
+              transition={{ duration: 0.2 }}
+              src={selectedResidenceImage.src}
+              alt={selectedResidenceImage.alt}
+              className="max-h-[90vh] max-w-[92vw] rounded-[1.5rem] object-contain shadow-[0_24px_80px_rgba(0,0,0,0.42)]"
+              onClick={(event) => event.stopPropagation()}
+            />
           </motion.div>
         ) : null}
       </AnimatePresence>
