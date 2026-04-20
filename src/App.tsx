@@ -251,10 +251,11 @@ export default function App() {
 
       <section className="relative flex min-h-screen items-center">
         <div className="absolute inset-0">
-          <img src="/hero-alanya-unsplash.jpg" alt="Побережье и море в Аланье" className="h-full w-full object-cover" />
-          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(3,35,55,0.32),rgba(3,67,102,0.2)_32%,rgba(250,248,245,0.92)_100%)]" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_30%,rgba(128,219,255,0.3),rgba(128,219,255,0.08)_24%,rgba(128,219,255,0)_44%)]" />
-          <div className="absolute inset-y-0 left-0 w-full bg-[radial-gradient(circle_at_24%_44%,rgba(0,46,76,0.34),rgba(0,46,76,0.12)_30%,rgba(0,46,76,0)_60%)]" />
+          <img src="/hero.jpg" alt="Яркий пляж с пальмами, морем и голубым небом" className="h-full w-full object-cover" />
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(3,35,55,0.22),rgba(3,94,138,0.1)_30%,rgba(250,248,245,0.88)_100%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_26%,rgba(255,230,132,0.22),rgba(255,230,132,0.08)_18%,rgba(255,230,132,0)_36%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_22%_32%,rgba(128,219,255,0.24),rgba(128,219,255,0.06)_26%,rgba(128,219,255,0)_48%)]" />
+          <div className="absolute inset-y-0 left-0 w-full bg-[radial-gradient(circle_at_24%_44%,rgba(0,46,76,0.24),rgba(0,46,76,0.08)_30%,rgba(0,46,76,0)_60%)]" />
         </div>
 
         <div className="relative z-10 mx-auto flex max-w-7xl flex-col gap-12 px-6 pb-20 pt-36 md:px-12 lg:flex-row lg:items-end lg:justify-between">
